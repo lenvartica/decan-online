@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS - Login</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js"></script>
+</head>
+<body style="background: linear-gradient(135deg, #0a0e27 0%, #1a1a4d 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem;">
+    
+    <div style="max-width: 400px; width: 100%; background: rgba(15, 12, 41, 0.95); border: 2px solid #00ffff; border-radius: 15px; padding: 2rem; box-shadow: 0 0 40px rgba(0, 255, 255, 0.3);">
+        
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h1 style="color: #00ffff; text-shadow: 0 0 20px #00ffff; margin: 0; font-size: 2.5rem;">🎬</h1>
+            <h2 style="color: #00ffff; margin: 0.5rem 0 0 0;">NEXUS</h2>
+            <p style="color: #ff00ff; margin: 0.5rem 0 0 0;">The Future of Entertainment</p>
+        </div>
+        
+        <form id="auth-form">
+            <div class="form-group">
+                <label for="email" style="color: #00ffff;">Email:</label>
+                <input type="email" id="email" required style="width: 100%; padding: 10px; border: 2px solid #00ffff; border-radius: 8px; background: rgba(0, 0, 0, 0.6); color: #00ffff; font-family: 'Orbitron', monospace;">
+            </div>
+            
+            <div class="form-group">
+                <label for="password" style="color: #00ffff;">Password:</label>
+                <input type="password" id="password" required style="width: 100%; padding: 10px; border: 2px solid #00ffff; border-radius: 8px; background: rgba(0, 0, 0, 0.6); color: #00ffff; font-family: 'Orbitron', monospace;">
+            </div>
+            
+            <div id="email-group" class="form-group" style="display: none;">
+                <label for="username" style="color: #00ffff;">Username:</label>
+                <input type="text" id="username" style="width: 100%; padding: 10px; border: 2px solid #00ffff; border-radius: 8px; background: rgba(0, 0, 0, 0.6); color: #00ffff; font-family: 'Orbitron', monospace;">
+            </div>
+            
+            <button type="submit" id="auth-submit" class="cyber-button" style="width: 100%; margin-top: 1rem; padding: 12px;">Login</button>
+            
+            <p id="toggle-auth" style="text-align: center; color: rgba(0, 255, 255, 0.7); margin-top: 1rem;">
+                Don't have an account? <span style="cursor: pointer; color: #00ffff; font-weight: 600;">Sign up</span>
+            </p>
+        </form>
+        
+        <div id="auth-error" style="color: #ff0000; background: rgba(255, 0, 0, 0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem; display: none;"></div>
+        
+    </div>
+    
+    <!-- Firebase and Auth Scripts -->
+    <script src="firebaseConfig.js"></script>
+    <script src="firebaseUserManager.js"></script>
+    <script>
+        let isSignupMode = false;
+        
+        document.getElementById('toggle-auth').addEventListener('click', function(e) {
+            if (e.target.textContent.includes('Sign up')) {
+                isSignupMode = true;
+                document.querySelector('h2').textContent = 'Create Account';
+                document.getElementById('email-group').style.display = 'block';
+                document.getElementById('auth-submit').textContent = 'Sign Up';
+                document.getElementById('toggle-auth').innerHTML = "Already have an account? <span style=\"cursor:pointer; color:#00ffff; font-weight:600;\">Login</span>";
+            } else {
+                isSignupMode = false;
+                document.querySelector('h2').textContent = 'NEXUS';
+                document.getElementById('email-group').style.display = 'none';
+                document.getElementById('auth-submit').textContent = 'Login';
+                document.getElementById('toggle-auth').innerHTML = "Don't have an account? <span style=\"cursor:pointer; color:#00ffff; font-weight:600;\">Sign up</span>";
+            }
+        });
+        
+        document.getElementById('auth-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const username = document.getElementById('username').value;
+            const errorDiv = document.getElementById('auth-error');
+            
+            errorDiv.style.display = 'none';
+            errorDiv.textContent = '';
+            
+            try {
+                if (isSignupMode) {
+                    // Signup
+                    const result = await firebaseUserManager.signup(email, password, username);
+                    if (result.success) {
+                        alert('Account created! Redirecting to home...');
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1000);
+                    } else {
+                        errorDiv.textContent = '❌ ' + result.error;
+                        errorDiv.style.display = 'block';
+                    }
+                } else {
+                    // Login
+                    const result = await firebaseUserManager.login(email, password);
+                    if (result.success) {
+                        alert('Logged in successfully!');
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1000);
+                    } else {
+                        errorDiv.textContent = '❌ ' + result.error;
+                        errorDiv.style.display = 'block';
+                    }
+                }
+            } catch (error) {
+                errorDiv.textContent = '❌ ' + error.message;
+                errorDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

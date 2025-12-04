@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS LIVE - Live Streams & Events</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Futuristic Navigation -->
+    <nav class="futuristic-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🎬</span>
+                <span class="logo-text">NEXUS</span>
+            </div>
+            <div class="nav-user-section">
+                <span id="user-greeting" class="user-greeting">Guest</span>
+                <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Dark/Light Mode">🌙</button>
+                <button id="upload-btn" class="upload-btn" title="Upload Video">📤 Upload</button>
+                <button id="auth-toggle" class="auth-toggle-btn">Login</button>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link" data-icon="🏠">
+                        <span class="nav-icon">🏠</span>
+                        <span class="nav-text">Home</span>
+                        <span class="nav-glow"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="shorts.html" class="nav-link" data-icon="⚡">
+                        <span class="nav-icon">⚡</span>
+                        <span class="nav-text">Shorts</span>
+                        <span class="nav-glow"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="live.html" class="nav-link active" data-icon="📡">
+                        <span class="nav-icon">📡</span>
+                        <span class="nav-text">Live</span>
+                        <span class="nav-glow"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="long.html" class="nav-link" data-icon="🎥">
+                        <span class="nav-icon">🎥</span>
+                        <span class="nav-text">Movies</span>
+                        <span class="nav-glow"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="kids.html" class="nav-link" data-icon="🎨">
+                        <span class="nav-icon">🎨</span>
+                        <span class="nav-text">Kids</span>
+                        <span class="nav-glow"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="account.html" class="nav-link" data-icon="👤">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-text">Profile</span>
+                        <span class="nav-glow"></span>
+                    </a>
+                </li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <h1 class="main-heading">
+        <span class="heading-glow">📡 NEXUS LIVE</span>
+        <span class="heading-sub">Live Streams & Events</span>
+    </h1>
+
+    <section id="video-container" class="video-section">
+        <div id="videos-grid" class="videos-grid live-grid"></div>
+    </section>
+
+    <section id="join">
+        <a id="button" href="https://chat.whatsapp.com/JCIpz9XkxsTCIvi0Gg8WEE" target="_blank" rel="noopener noreferrer">join us</a>
+        <a id="button2" class="link-button" href="https://chat.whatsapp.com/GC8GGZa4FeIHP1Wz8iheV8" target="_blank" rel="noopener noreferrer">join group 2</a>
+        <a id="button3" class="link-button" href="https://whatsapp.com/channel/0029VbBv1fxBKfi72JZzbz3u" target="_blank" rel="noopener noreferrer">join channel</a>
+    </section>
+
+    <!-- Comment Modal -->
+    <div id="comment-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Live Chat</h2>
+            <div id="comments-list" class="comments-list"></div>
+            <textarea id="comment-input" placeholder="Join the live chat..." class="comment-input"></textarea>
+            <button id="post-comment-btn" class="cyber-button">Send Message</button>
+        </div>
+    </div>
+
+    <script>
+        const videosDatabase = [
+            {
+                id: 201,
+                title: "🔴 Live: Gaming Tournament",
+                description: "Watch the most intense gaming tournament of the year live!",
+                videoUrl: "https://www.youtube.com/embed/jNQXAC9IVRw",
+                source: "YouTube",
+                isLive: true,
+                downloads: [
+                    { quality: "1080p", size: "3.0GB", url: "https://www.youtube.com/watch?v=jNQXAC9IVRw" },
+                    { quality: "720p", size: "1.5GB", url: "https://www.youtube.com/watch?v=jNQXAC9IVRw" }
+                ]
+            },
+            {
+                id: 202,
+                title: "🔴 Live: Music Concert",
+                description: "Experience the greatest live music performance streaming now!",
+                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                source: "YouTube",
+                isLive: true,
+                downloads: [
+                    { quality: "1080p", size: "2.8GB", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" },
+                    { quality: "720p", size: "1.4GB", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" }
+                ]
+            },
+            {
+                id: 203,
+                title: "🔴 Live: Tech Conference",
+                description: "Join us for the latest technology announcements and demos.",
+                videoUrl: "https://www.youtube.com/embed/9bZkp7q19f0",
+                source: "YouTube",
+                isLive: true,
+                downloads: [
+                    { quality: "1080p", size: "3.2GB", url: "https://www.youtube.com/watch?v=9bZkp7q19f0" },
+                    { quality: "720p", size: "1.6GB", url: "https://www.youtube.com/watch?v=9bZkp7q19f0" }
+                ]
+            },
+            {
+                id: 204,
+                title: "🔴 Live: Movie Premiere",
+                description: "Watch the exclusive world premiere of the upcoming blockbuster!",
+                videoUrl: "https://www.youtube.com/embed/kxkrd8-N7F8",
+                source: "YouTube",
+                isLive: true,
+                downloads: [
+                    { quality: "1080p", size: "3.5GB", url: "https://www.youtube.com/watch?v=kxkrd8-N7F8" },
+                    { quality: "720p", size: "1.8GB", url: "https://www.youtube.com/watch?v=kxkrd8-N7F8" }
+                ]
+            },
+            {
+                id: 205,
+                title: "🔴 Live: Sports Event",
+                description: "Catch all the action from the biggest sports event of the year.",
+                videoUrl: "https://www.youtube.com/embed/E62Y6Dz2hpw",
+                source: "YouTube",
+                isLive: true,
+                downloads: [
+                    { quality: "1080p", size: "3.0GB", url: "https://www.youtube.com/watch?v=E62Y6Dz2hpw" },
+                    { quality: "720p", size: "1.5GB", url: "https://www.youtube.com/watch?v=E62Y6Dz2hpw" }
+                ]
+            },
+            {
+                id: 206,
+                title: "🔴 Live: Q&A Session",
+                description: "Ask your questions directly to the creators and influencers.",
+                videoUrl: "https://www.youtube.com/embed/O91DT1pR478",
+                source: "YouTube",
+                isLive: true,
+                downloads: [
+                    { quality: "1080p", size: "2.5GB", url: "https://www.youtube.com/watch?v=O91DT1pR478" },
+                    { quality: "720p", size: "1.3GB", url: "https://www.youtube.com/watch?v=O91DT1pR478" }
+                ]
+            }
+        ];
+
+        // Video Manager Class
+        class VideoManager {
+            constructor() {
+                this.storageKey = 'videoAppData';
+                this.initializeStorage();
+            }
+
+            initializeStorage() {
+                if (!localStorage.getItem(this.storageKey)) {
+                    localStorage.setItem(this.storageKey, JSON.stringify({
+                        likes: {},
+                        comments: {},
+                        watchlist: []
+                    }));
+                }
+            }
+
+            getLikes(videoId) {
+                const data = JSON.parse(localStorage.getItem(this.storageKey));
+                return data.likes[videoId] || { count: 0, liked: false };
+            }
+
+            toggleLike(videoId) {
+                const data = JSON.parse(localStorage.getItem(this.storageKey));
+                if (!data.likes[videoId]) {
+                    data.likes[videoId] = { count: 0, liked: false };
+                }
+                
+                if (data.likes[videoId].liked) {
+                    data.likes[videoId].count--;
+                    data.likes[videoId].liked = false;
+                } else {
+                    data.likes[videoId].count++;
+                    data.likes[videoId].liked = true;
+                }
+                
+                localStorage.setItem(this.storageKey, JSON.stringify(data));
+                return data.likes[videoId];
+            }
+
+            getComments(videoId) {
+                const data = JSON.parse(localStorage.getItem(this.storageKey));
+                return data.comments[videoId] || [];
+            }
+
+            addComment(videoId, comment) {
+                const data = JSON.parse(localStorage.getItem(this.storageKey));
+                if (!data.comments[videoId]) {
+                    data.comments[videoId] = [];
+                }
+
+                const newComment = {
+                    id: Date.now(),
+                    author: `User ${Math.floor(Math.random() * 1000)}`,
+                    text: comment,
+                    timestamp: new Date().toLocaleTimeString()
+                };
+
+                data.comments[videoId].push(newComment);
+                localStorage.setItem(this.storageKey, JSON.stringify(data));
+                return newComment;
+            }
+        }
+
+        const videoManager = new VideoManager();
+        let currentVideoId = null;
+
+        function initializeVideosGrid() {
+            const grid = document.getElementById('videos-grid');
+            grid.innerHTML = '';
+
+            videosDatabase.forEach(video => {
+                const likes = videoManager.getLikes(video.id);
+                const videoCard = createVideoCard(video, likes);
+                grid.appendChild(videoCard);
+            });
+        }
+
+        function createVideoCard(video, likes) {
+            const card = document.createElement('div');
+            card.className = 'video-card live-card';
+            
+            const isLiked = likes.liked ? 'liked' : '';
+
+            card.innerHTML = `
+                <div class="live-badge">🔴 LIVE</div>
+                <div class="video-player">
+                    <iframe src="${video.videoUrl}" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">${video.title}</h3>
+                    <p class="video-description">${video.description}</p>
+                    <div class="video-actions">
+                        <button class="action-btn like-btn ${isLiked}" data-video-id="${video.id}">
+                            <span>❤️</span>
+                            <span class="like-count">${likes.count}</span>
+                        </button>
+                        <button class="action-btn download-btn" data-video-id="${video.id}">
+                            <span>⬇️</span>
+                            <span>Download</span>
+                        </button>
+                        <button class="action-btn comment-btn" data-video-id="${video.id}">
+                            <span>💬</span>
+                            <span>Chat</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            const likeBtn = card.querySelector('.like-btn');
+            likeBtn.addEventListener('click', () => handleLike(video.id, likeBtn));
+
+            const downloadBtn = card.querySelector('.download-btn');
+            downloadBtn.addEventListener('click', () => handleDownload(video.id));
+
+            const commentBtn = card.querySelector('.comment-btn');
+            commentBtn.addEventListener('click', () => openCommentModal(video.id, video.title));
+
+            return card;
+        }
+
+        function handleLike(videoId, button) {
+            const likes = videoManager.toggleLike(videoId);
+            
+            button.classList.toggle('liked');
+            const countSpan = button.querySelector('.like-count');
+            countSpan.textContent = likes.count;
+
+            showToast(likes.liked ? '❤️ Stream Liked!' : '💔 Like Removed');
+        }
+
+        function handleDownload(videoId) {
+            const video = videosDatabase.find(v => v.id === videoId);
+            const modal = document.createElement('div');
+            modal.className = 'modal active';
+            modal.id = 'download-modal';
+            
+            let downloadHTML = '<div class="modal-content"><span class="close">&times;</span>';
+            downloadHTML += `<h2>📥 Record Stream - ${video.title}</h2>`;
+            downloadHTML += '<div class="download-options">';
+            
+            video.downloads.forEach(download => {
+                downloadHTML += `
+                    <div class="download-item">
+                        <button class="download-quality-btn" data-url="${download.url}" data-quality="${download.quality}" data-title="${video.title}">
+                            <div class="download-info">
+                                <span class="quality-name">📥 ${download.quality}</span>
+                                <span class="quality-size">${download.size}</span>
+                            </div>
+                            <span class="download-arrow">→</span>
+                        </button>
+                    </div>
+                `;
+            });
+            
+            downloadHTML += '</div></div>';
+            modal.innerHTML = downloadHTML;
+            document.body.appendChild(modal);
+
+            const closeBtn = modal.querySelector('.close');
+            closeBtn.addEventListener('click', () => {
+                modal.remove();
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+
+            const qualityBtns = modal.querySelectorAll('.download-quality-btn');
+            qualityBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const url = e.currentTarget.getAttribute('data-url');
+                    const quality = e.currentTarget.getAttribute('data-quality');
+                    const title = e.currentTarget.getAttribute('data-title');
+                    
+                    downloadVideo(title, quality, url);
+                    showToast(`📥 Recording ${quality} stream...`);
+                    setTimeout(() => {
+                        modal.remove();
+                    }, 1000);
+                });
+            });
+        }
+
+        function downloadVideo(title, quality, videoUrl) {
+            const link = document.createElement('a');
+            link.href = videoUrl;
+            link.target = '_blank';
+            link.download = `${title}_${quality}.mp4`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function openCommentModal(videoId, videoTitle) {
+            currentVideoId = videoId;
+            const modal = document.getElementById('comment-modal');
+            modal.classList.add('active');
+
+            loadComments(videoId);
+
+            const postBtn = document.getElementById('post-comment-btn');
+            postBtn.onclick = () => postComment(videoId);
+
+            const closeBtn = modal.querySelector('.close');
+            closeBtn.onclick = () => {
+                modal.classList.remove('active');
+            };
+
+            modal.onclick = (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            };
+        }
+
+        function loadComments(videoId) {
+            const commentsList = document.getElementById('comments-list');
+            const comments = videoManager.getComments(videoId);
+
+            commentsList.innerHTML = '';
+
+            if (comments.length === 0) {
+                commentsList.innerHTML = '<p style="color: #00ffff; text-align: center;">Live chat will appear here...</p>';
+                return;
+            }
+
+            comments.forEach(comment => {
+                const commentDiv = document.createElement('div');
+                commentDiv.className = 'comment-item';
+                commentDiv.innerHTML = `
+                    <div class="comment-author">${comment.author}</div>
+                    <div class="comment-text">${comment.text}</div>
+                    <div class="comment-time">${comment.timestamp}</div>
+                `;
+                commentsList.appendChild(commentDiv);
+            });
+        }
+
+        function postComment(videoId) {
+            const input = document.getElementById('comment-input');
+            const comment = input.value.trim();
+
+            if (comment === '') {
+                showToast('⚠️ Message cannot be empty!');
+                return;
+            }
+
+            videoManager.addComment(videoId, comment);
+            input.value = '';
+
+            loadComments(videoId);
+            showToast('💬 Message sent to live chat!');
+        }
+
+        function showToast(message) {
+            let toast = document.getElementById('toast');
+            
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'toast';
+                toast.className = 'toast';
+                document.body.appendChild(toast);
+            }
+
+            toast.textContent = message;
+            toast.classList.add('visible');
+
+            setTimeout(() => {
+                toast.classList.remove('visible');
+            }, 3000);
+        }
+
+        function addStyles() {
+            const style = document.createElement('style');
+            style.textContent = `
+                .live-card {
+                    position: relative;
+                    border-color: #ff0000 !important;
+                }
+
+                .live-badge {
+                    position: absolute;
+                    top: 15px;
+                    right: 15px;
+                    background: rgba(255, 0, 0, 0.8);
+                    color: #fff;
+                    padding: 8px 12px;
+                    border-radius: 20px;
+                    font-weight: bold;
+                    font-size: 0.85rem;
+                    animation: livePulse 1.5s ease-in-out infinite;
+                    z-index: 10;
+                }
+
+                @keyframes livePulse {
+                    0%, 100% {
+                        box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+                    }
+                    50% {
+                        box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+                    }
+                }
+
+                .live-grid {
+                    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+                }
+
+                @media (max-width: 768px) {
+                    .live-grid {
+                        grid-template-columns: 1fr;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeVideosGrid();
+            addStyles();
+        });
+    </script>
+</body>
+<footer>
+    <script src="auth.js"></script>
+    <script src="theme.js"></script>
+    <script src="upload.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Initialize user greeting and auth UI
+        document.addEventListener('DOMContentLoaded', function() {
+            const userGreeting = document.getElementById('user-greeting');
+            const authToggleBtn = document.getElementById('auth-toggle');
+            const uploadBtn = document.getElementById('upload-btn');
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            
+            // Initialize managers
+            window.themeManager = new ThemeManager();
+            window.userManager = new UserManager();
+            window.uploadManager = new VideoUploadManager(window.userManager);
+            
+            // Update user greeting
+            const currentUser = userManager.getCurrentUser();
+            if (currentUser) {
+                userGreeting.textContent = `👤 ${currentUser.username}`;
+                authToggleBtn.textContent = 'Logout';
+            } else {
+                userGreeting.textContent = 'Guest';
+                authToggleBtn.textContent = 'Login';
+            }
+            
+            // Auth toggle button
+            authToggleBtn.addEventListener('click', function() {
+                if (userManager.getCurrentUser()) {
+                    if (confirm('Are you sure you want to logout?')) {
+                        userManager.logout();
+                        userGreeting.textContent = 'Guest';
+                        authToggleBtn.textContent = 'Login';
+                        location.reload();
+                    }
+                } else {
+                    alert('Redirecting to login page...');
+                    window.location.href = 'index.html';
+                }
+            });
+            
+            // Theme toggle
+            themeToggleBtn.addEventListener('click', function() {
+                themeManager.toggleTheme();
+                themeToggleBtn.textContent = themeManager.currentTheme === 'dark' ? '☀️' : '🌙';
+            });
+            
+            // Upload button
+            uploadBtn.addEventListener('click', function() {
+                const user = userManager.getCurrentUser();
+                if (!user) {
+                    alert('Please login first to upload videos');
+                    window.location.href = 'index.html';
+                } else {
+                    uploadManager.createUploadModal();
+                }
+            });
+            
+            // Initialize videos
+            initializeVideosGrid();
+        });
+    </script>
+</footer>
+</html>

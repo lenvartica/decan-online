@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS VIDEO SITE - The Future of Entertainment</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js"></script>
+</head>
+<body>
+    <!-- Futuristic Navigation -->
+    <nav class="futuristic-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🎬</span>
+                <span class="logo-text">NEXUS</span>
+            </div>
+            <div class="nav-user-section">
+                <span id="user-greeting" class="user-greeting">Guest</span>
+                <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Dark/Light Mode">🌙</button>
+                <button id="upload-btn" class="upload-btn" title="Upload Video">📤 Upload</button>
+                <button id="auth-toggle" class="auth-toggle-btn">Login</button>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link active" data-icon="🏠">
+                        <span class="nav-icon">🏠</span>
+                        <span class="nav-text">Home</span>
+                        <span class="nav-glow"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="shorts.html" class="nav-link" data-icon="⚡">
+                        <span class="nav-icon">⚡</span>
+                        <span class="nav-text">Shorts</span>
+                        <span class="nav-glow"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="live.html" class="nav-link" data-icon="📡">
+                        <span class="nav-icon">📡</span>
+                        <span class="nav-text">Live</span>
+                        <span class="nav-glow"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="long.html" class="nav-link" data-icon="🎥">
+                        <span class="nav-icon">🎥</span>
+                        <span class="nav-text">Movies</span>
+                        <span class="nav-glow"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="kids.html" class="nav-link" data-icon="🎨">
+                        <span class="nav-icon">🎨</span>
+                        <span class="nav-text">Kids</span>
+                        <span class="nav-glow"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="account.html" class="nav-link" data-icon="👤">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-text">Profile</span>
+                        <span class="nav-glow"></span>
+                    </a>
+                </li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <h1 class="main-heading">
+        <span class="heading-glow">NEXUS VIDEO</span>
+        <span class="heading-sub">The Future of Entertainment</span>
+    </h1>
+    <section id="video-container" class="video-section">
+        <h2 class="section-heading">Featured Videos</h2>
+        <div id="videos-grid" class="videos-grid"></div>
+    </section>
+
+    <!-- Shared Videos Section -->
+    <section id="shared-container" class="video-section" style="display:none;">
+        <h2 class="section-heading">📤 Shared With Me</h2>
+        <div id="shared-videos-grid" class="videos-grid"></div>
+    </section>
+
+    <section id="join">
+        <a id="button" href="https://chat.whatsapp.com/JCIpz9XkxsTCIvi0Gg8WEE" target="_blank" rel="noopener noreferrer">join us</a>
+        <a id="button2" class="link-button" href="https://chat.whatsapp.com/GC8GGZa4FeIHP1Wz8iheV8" target="_blank" rel="noopener noreferrer">join group 2</a>
+        <a id="button3" class="link-button" href="https://whatsapp.com/channel/0029VbBv1fxBKfi72JZzbz3u" target="_blank" rel="noopener noreferrer">join channel</a>
+    </section>
+
+    <!-- Comment Modal -->
+    <div id="comment-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Comments</h2>
+            <div id="comments-list" class="comments-list"></div>
+            <textarea id="comment-input" placeholder="Write your comment..." class="comment-input"></textarea>
+            <button id="post-comment-btn" class="cyber-button">Post Comment</button>
+        </div>
+    </div>
+
+    <!-- Login/Signup Modal -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="auth-title">Login</h2>
+            <form id="auth-form">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div id="email-group" class="form-group" style="display:none;">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email">
+                </div>
+                <button type="submit" id="auth-submit" class="cyber-button">Login</button>
+                <p id="toggle-auth" class="toggle-auth">Don't have an account? <span style="cursor:pointer; color:#00ffff;">Sign up</span></p>
+            </form>
+            <div id="auth-error" style="color:#ff00ff; margin-top:10px;"></div>
+        </div>
+    </div>
+
+    <!-- Logout Modal -->
+    <div id="logout-modal" class="modal">
+        <div class="modal-content">
+            <h2>Logout</h2>
+            <p>Are you sure you want to logout?</p>
+            <button id="confirm-logout" class="cyber-button" style="background:#ff00ff;">Yes, Logout</button>
+            <button id="cancel-logout" class="cyber-button">Cancel</button>
+        </div>
+    </div>
+    
+</body>
+<footer>
+    <script src="auth.js"></script>
+    <script src="theme.js"></script>
+    <script src="upload.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Initialize user greeting and auth UI
+        document.addEventListener('DOMContentLoaded', function() {
+            const userGreeting = document.getElementById('user-greeting');
+            const authToggleBtn = document.getElementById('auth-toggle');
+            const uploadBtn = document.getElementById('upload-btn');
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const authModal = document.getElementById('auth-modal');
+            const logoutModal = document.getElementById('logout-modal');
+            
+            // Initialize theme manager
+            window.themeManager = new ThemeManager();
+            window.userManager = new UserManager();
+            window.uploadManager = new VideoUploadManager(window.userManager);
+            
+            // Update user greeting
+            const currentUser = userManager.getCurrentUser();
+            if (currentUser) {
+                userGreeting.textContent = `👤 ${currentUser.username}`;
+                authToggleBtn.textContent = 'Logout';
+            } else {
+                userGreeting.textContent = 'Guest';
+                authToggleBtn.textContent = 'Login';
+            }
+            
+            // Auth toggle button
+            authToggleBtn.addEventListener('click', function() {
+                if (userManager.getCurrentUser()) {
+                    logoutModal.style.display = 'block';
+                } else {
+                    authModal.style.display = 'block';
+                    document.getElementById('auth-title').textContent = 'Login';
+                    document.getElementById('email-group').style.display = 'none';
+                    document.getElementById('toggle-auth').innerHTML = "Don't have an account? <span style=\"cursor:pointer; color:#00ffff;\">Sign up</span>";
+                }
+            });
+            
+            // Theme toggle
+            themeToggleBtn.addEventListener('click', function() {
+                themeManager.toggleTheme();
+                themeToggleBtn.textContent = themeManager.currentTheme === 'dark' ? '☀️' : '🌙';
+            });
+            
+            // Upload button
+            uploadBtn.addEventListener('click', function() {
+                const user = userManager.getCurrentUser();
+                if (!user) {
+                    alert('Please login first to upload videos');
+                    authModal.style.display = 'block';
+                } else {
+                    uploadManager.createUploadModal();
+                }
+            });
+            
+            // Login/Signup form
+            document.getElementById('auth-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const email = document.getElementById('email').value;
+                const authTitle = document.getElementById('auth-title').textContent;
+                const errorDiv = document.getElementById('auth-error');
+                
+                try {
+                    if (authTitle === 'Login') {
+                        const result = userManager.login(username, password);
+                        if (result) {
+                            authModal.style.display = 'none';
+                            userGreeting.textContent = `👤 ${username}`;
+                            authToggleBtn.textContent = 'Logout';
+                            document.getElementById('auth-form').reset();
+                            errorDiv.textContent = '';
+                            location.reload();
+                        } else {
+                            errorDiv.textContent = 'Invalid credentials';
+                        }
+                    } else {
+                        const result = userManager.signup(username, password, email);
+                        if (result) {
+                            authModal.style.display = 'none';
+                            userGreeting.textContent = `👤 ${username}`;
+                            authToggleBtn.textContent = 'Logout';
+                            document.getElementById('auth-form').reset();
+                            errorDiv.textContent = '';
+                            location.reload();
+                        } else {
+                            errorDiv.textContent = 'Username already exists or invalid input';
+                        }
+                    }
+                } catch (e) {
+                    errorDiv.textContent = e.message;
+                }
+            });
+            
+            // Toggle between login and signup
+            document.getElementById('toggle-auth').addEventListener('click', function(e) {
+                if (e.target.textContent.includes('Sign up')) {
+                    document.getElementById('auth-title').textContent = 'Sign Up';
+                    document.getElementById('email-group').style.display = 'block';
+                    document.getElementById('auth-submit').textContent = 'Sign Up';
+                    document.getElementById('toggle-auth').innerHTML = "Already have an account? <span style=\"cursor:pointer; color:#00ffff;\">Login</span>";
+                } else {
+                    document.getElementById('auth-title').textContent = 'Login';
+                    document.getElementById('email-group').style.display = 'none';
+                    document.getElementById('auth-submit').textContent = 'Login';
+                    document.getElementById('toggle-auth').innerHTML = "Don't have an account? <span style=\"cursor:pointer; color:#00ffff;\">Sign up</span>";
+                }
+            });
+            
+            // Logout confirm
+            document.getElementById('confirm-logout').addEventListener('click', function() {
+                userManager.logout();
+                logoutModal.style.display = 'none';
+                userGreeting.textContent = 'Guest';
+                authToggleBtn.textContent = 'Login';
+                location.reload();
+            });
+            
+            document.getElementById('cancel-logout').addEventListener('click', function() {
+                logoutModal.style.display = 'none';
+            });
+            
+            // Close modals
+            document.querySelectorAll('.close').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.closest('.modal').style.display = 'none';
+                });
+            });
+            
+            window.addEventListener('click', function(e) {
+                if (e.target.classList.contains('modal')) {
+                    e.target.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+<footer>
+    <script src="firebaseConfig.js"></script>
+    <script src="firebaseUserManager.js"></script>
+    <script src="firebaseUploadManager.js"></script>
+    <script src="videoSharingManager.js"></script>
+    <script src="auth.js"></script>
+    <script src="theme.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Firebase initialization and UI update
+        document.addEventListener('DOMContentLoaded', function() {
+            const userGreeting = document.getElementById('user-greeting');
+            const authToggleBtn = document.getElementById('auth-toggle');
+            const uploadBtn = document.getElementById('upload-btn');
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            
+            // Wait for Firebase auth state
+            firebase.auth().onAuthStateChanged(async function(user) {
+                if (user) {
+                    // User is logged in
+                    const userProfile = await firebaseUserManager.loadUserProfile(user.uid);
+                    userGreeting.textContent = `👤 ${userProfile.username}`;
+                    authToggleBtn.textContent = 'Logout';
+                    
+                    // Load shared videos
+                    await videoSharingManager.displaySharedVideos('shared-videos-grid');
+                    const sharedContainer = document.getElementById('shared-container');
+                    const sharedVideos = await firebaseUserManager.getSharedVideos(user.uid);
+                    if (sharedVideos.length > 0) {
+                        sharedContainer.style.display = 'block';
+                    }
+                } else {
+                    // User is not logged in
+                    userGreeting.textContent = 'Guest';
+                    authToggleBtn.textContent = 'Login';
+                }
+            });
+            
+            // Auth toggle
+            authToggleBtn.addEventListener('click', function() {
+                if (firebase.auth().currentUser) {
+                    if (confirm('Are you sure you want to logout?')) {
+                        firebaseUserManager.logout().then(() => {
+                            location.reload();
+                        });
+                    }
+                } else {
+                    // Show login modal (implement as needed)
+                    alert('Redirecting to login...');
+                }
+            });
+            
+            // Theme toggle
+            themeToggleBtn.addEventListener('click', function() {
+                themeManager.toggleTheme();
+                themeToggleBtn.textContent = themeManager.currentTheme === 'dark' ? '☀️' : '🌙';
+            });
+            
+            // Upload button
+            uploadBtn.addEventListener('click', function() {
+                const user = firebase.auth().currentUser;
+                if (!user) {
+                    alert('Please login first to upload videos');
+                    window.location.href = 'login.html';
+                } else {
+                    firebaseUploadManager.createUploadModal();
+                }
+            });
+        });
+    </script>
+</footer>
+</html>
